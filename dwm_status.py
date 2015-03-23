@@ -2,6 +2,14 @@
 
 # dwm status
 
+# network (lan/wlan essid)
+# biff (gmail)
+# temperature
+# battery info
+# load
+# date/time (in city0)
+# date/time (in city1)
+
 import os
 import array
 import fcntl
@@ -43,12 +51,11 @@ def getTemperature():
     f.close()
     # the OS reports temperature in milli units; divide by 1000 to get
     # the units (Centigrade)
-    # return temp.__str__() + chr(176) + "C"
+    #return temp.__str__() + chr(176) + "C"
     return temp.__str__() + "C"
 
 
 def getBatteryInfo():
-    # this is unused; we use xbattbar instead.
     # for Dell Latitude E5440, the following path has battery info.
     bat0 = '/sys/class/power_supply/BAT0'
     capacity = bat0 + '/capacity'
@@ -65,6 +72,7 @@ def getBatteryInfo():
 def getLoad():
     return os.getloadavg()[0]
 
+
 def getDate(tz=None, fmt=None):
     if not fmt:
         fmt = "%a %d %b %Y %R %Z"
@@ -74,7 +82,6 @@ def getDate(tz=None, fmt=None):
         return datetime.datetime.now(tz).strftime(fmt)
 
 def getStatus():
-    # for now, we pass the string generated to xsetroot.
     print "[%s] %s (%s) %s %s" % (getESSID('wlan0'),
                                  getDate(pytz.timezone('Asia/Kolkata')),
                                  getDate(pytz.timezone('America/Los_Angeles'), "%H:%M %Z"),
